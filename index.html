@@ -132,6 +132,25 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8
 }
 .chart .dim { opacity: 0.35; }
 
+.brand { display: flex; align-items: center; gap: 1rem; }
+.logo { width: 64px; height: 64px; border-radius: 50%; flex: none; display: block; }
+.photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+.photos.pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .photos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.photo { margin: 0; display: grid; gap: 0.35rem; align-content: start; }
+.photo img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 6px; background: var(--rule); }
+.photo figcaption { font-size: 0.8rem; color: var(--ink-2); line-height: 1.4; }
+.photo.tall { max-width: 300px; }
+.photo.tall img { aspect-ratio: auto; border: 1px solid var(--rule); }
+
+details.more > summary { cursor: pointer; list-style: none; width: fit-content; font-weight: 500; font-size: 0.9rem; color: var(--accent); display: inline-flex; align-items: center; gap: 0.4rem; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::before { content: ""; width: 0.45em; height: 0.45em; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform 120ms ease; }
+details.more[open] > summary::before { transform: rotate(45deg); }
+details.more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+details.more > .table-wrap { margin-top: 0.6rem; }
+details.more > .table-wrap + .table-wrap { margin-top: 0.75rem; }
+
 .theme-toggle {
   position: fixed; z-index: 10;
   right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
@@ -160,9 +179,14 @@ try {
 <div class="page">
 
 <header>
-  <div class="eyebrow">Case study · Fall 2024 · Greencastle, Indiana</div>
-  <h1>DPU K-Food Customer Report</h1>
-  <p class="dek">DPU K-Food was a student-run Korean food pop-up: customers pre-ordered through a form or DM, paid by Zelle, Venmo or cash, and picked up dinner from a parking lot on Bloomington St. This report analyzes all 156 recorded customer visits across its eight pickups to answer three questions: who bought, who came back, and why demand faded.</p>
+  <div class="brand">
+    <img class="logo" src="images/logo.jpg" alt="DePauw K-Food logo" width="320" height="320">
+    <div>
+      <div class="eyebrow">Case study · Fall 2024 · Greencastle, Indiana</div>
+      <h1>DPU K-Food Customer Report</h1>
+    </div>
+  </div>
+  <p class="dek">I started DPU K-Food with three friends in fall 2024 to find out whether Korean food would sell to students who are not Korean. We took pre-orders through a form or Instagram DM, collected payment by Zelle, Venmo or cash, and handed out dinner from a parking lot on Bloomington St. In this report I analyze all 156 recorded customer visits across our eight pickups to answer three questions: who bought, who came back, and why demand faded.</p>
   <div class="meta"><span>8 pickups, 1 catering, 1 group order · Sep 14 – Nov 22, 2024</span><span>156 customer visits · 72 people · 348 meals served</span><span>141 pre-launch survey responses</span></div>
 </header>
 
@@ -176,7 +200,7 @@ try {
 <section>
   <div class="eyebrow">Outcome</div>
   <h2>Is Korean food actually popular in the US?</h2>
-  <p>The project started with one question: would Korean food sell to people in the US who are not Korean? Within the market we tested, the answer is yes. That market was a single US campus, not the country, so the answer has limits.</p>
+  <p>I started the project to test whether Korean food would sell to people in the US who are not Korean. Within the market we tested, it did. That market was a single US campus, not the country, so the answer has limits.</p>
   <div class="two">
     <div class="stack">
       <h3>What the data supports</h3>
@@ -219,6 +243,14 @@ try {
   <div class="eyebrow">01 · Demand over time</div>
   <h2>Eight pickups, one launch wave</h2>
   <p>The first two pickups drew 33 and 32 customers. After that, each pickup relied mostly on people who had already ordered. Pickups 5, 7 and 8 had no first-time customers at all.</p>
+  <div class="photos">
+    <figure class="photo"><img src="images/dakgalbi.jpg" alt="Dalkgalbi, spicy stir-fried chicken over rice" width="900" height="1200" loading="lazy"><figcaption>Pickup 1 · Sep 14 · Dalkgalbi</figcaption></figure>
+    <figure class="photo"><img src="images/spicy-pork.jpg" alt="Two bowls of spicy pork over rice" width="900" height="1200" loading="lazy"><figcaption>Pickup 3 · Sep 28 · Spicy pork with rice</figcaption></figure>
+    <figure class="photo"><img src="images/tteokbokki.jpg" alt="Tteokbokki with fish balls and a boiled egg" width="900" height="1200" loading="lazy"><figcaption>Pickup 4 · Oct 10 · Tteokbokki</figcaption></figure>
+    <figure class="photo"><img src="images/poster-soy-spicy-chicken.jpg" alt="Instagram post for soy or spicy chicken with rice, $8.90, Oct 26" width="1080" height="1080" loading="lazy"><figcaption>Pickup 5 · Oct 26 · Instagram post</figcaption></figure>
+    <figure class="photo"><img src="images/poster-galbijjim.jpg" alt="Instagram post for galbijjim with rice, $8.90, Nov 9" width="1080" height="1080" loading="lazy"><figcaption>Pickup 7 · Nov 9 · Instagram post</figcaption></figure>
+    <figure class="photo"><img src="images/poster-monon-sale.jpg" alt="Instagram post for a Monon Bell game-day sale on Nov 17: kimchi pancake $4 and japchae $8" width="1080" height="1080" loading="lazy"><figcaption>Pickup 8 · Nov 17 · Monon Bell game-day sale</figcaption></figure>
+  </div>
   <figure>
     <figcaption><span class="t">Customers per pickup, new vs returning</span><span class="s">A customer is "returning" if they ordered at any earlier pickup.</span></figcaption>
     <div class="chart" id="chart-new">
@@ -231,6 +263,8 @@ try {
       <tbody id="event-rows"></tbody>
     </table>
   </div>
+  <details class="more">
+  <summary>Show details: headcount and meals served</summary>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Headcount</th><th class="n">People</th></tr></thead>
@@ -254,7 +288,8 @@ try {
       </tbody>
     </table>
   </div>
-  <p class="small muted">Revenue is what each pickup's order sheet recorded, and it matches the sheet's own totals. Pickup 2 includes $110.80 from rows with no buyer name. Pickup 7 fell on the same day as a $333 catering order for the DU fraternity, which is counted separately. The team took only a small number of individual orders that day to make room for the catering.</p>
+  </details>
+  <p class="small muted">Revenue is what each pickup's order sheet recorded, and it matches the sheet's own totals. Pickup 2 includes $110.80 from rows with no buyer name. Pickup 7 fell on the same day as a $333 catering order for the DU fraternity, which is counted separately. We took only a few individual orders that day to make room for the catering.</p>
 </section>
 
 <section>
@@ -269,12 +304,15 @@ try {
     <div class="chart" id="chart-freq"></div>
   </figure>
   <p>Retention was steady from pickup to pickup. On average, 42% of one pickup's customers ordered again at the very next one. The first two groups of customers held up best: 52% of the 33 launch customers and 57% of the 21 customers who joined at pickup 2 came back later.</p>
+  <details class="more">
+  <summary>Show details: return rate by first pickup</summary>
   <div class="table-wrap">
     <table>
       <thead><tr><th>First pickup</th><th class="n">New customers</th><th class="n">Came back later</th><th class="n">Return rate</th></tr></thead>
       <tbody id="cohort-rows"></tbody>
     </table>
   </div>
+  </details>
 </section>
 
 <section>
@@ -282,7 +320,7 @@ try {
   <h2>Mostly non-Korean customers, from the first pickup on</h2>
   <p>The launch reached international and American students first. Korean students joined from the second pickup. Non-Korean customers outnumbered Korean customers at every pickup.</p>
   <figure>
-    <figcaption><span class="t">Customers per pickup by origin</span><span class="s">Origin is nationality as recalled by the owner. "Unknown" means the owner could not recall it.</span></figcaption>
+    <figcaption><span class="t">Customers per pickup by origin</span><span class="s">Origin is nationality as I recalled it. "Unknown" means I could not recall it.</span></figcaption>
     <div class="chart" id="chart-origin">
       <div class="legend"><span><i style="background:var(--s-korean)"></i>Korean</span><span><i style="background:var(--s-nonkorean)"></i>Non-Korean</span><span><i style="background:var(--s-unknown)"></i>Unknown</span></div>
     </div>
@@ -304,6 +342,7 @@ try {
   <div class="eyebrow">04 · Survey vs reality</div>
   <h2>What people said and what they bought</h2>
   <p>Before launch, 141 students answered a short survey on what they wanted to eat, when, and whether they would pay under $10.</p>
+  <figure class="photo tall"><img src="images/survey-form.jpg" alt="Google Form asking what students would like to eat, shared as an Instagram story" width="675" height="1200" loading="lazy"><figcaption>The survey went out as an Instagram story captioned "Not for Korean, please vote!"</figcaption></figure>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Survey said</th><th>What happened</th></tr></thead>
@@ -322,6 +361,8 @@ try {
   <div class="eyebrow">05 · Economics</div>
   <h2>Roughly half of each sale was gross margin</h2>
   <p>Ingredient and packaging costs were logged for the first two pickups and the student association order. Labor was unpaid and is not included.</p>
+  <details class="more">
+  <summary>Show details: margins and revenue by channel</summary>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Sale</th><th class="n">Revenue</th><th class="n">Ingredient cost</th><th class="n">Gross profit</th><th class="n">Margin</th></tr></thead>
@@ -344,12 +385,13 @@ try {
       </tbody>
     </table>
   </div>
+  </details>
   <p>The fraternity catering order alone brought in more than any single pickup after the first three.</p>
 </section>
 
 <section>
   <div class="eyebrow">06 · If we ran it again</div>
-  <h2>The team's plan: weekend catering for Greek houses</h2>
+  <h2>Our plan: weekend catering for Greek houses</h2>
   <p>The food worked for people who tried it. Reaching new people was the problem. Every pickup was announced the same way, through Instagram stories, which reach the same followers each time. After two pickups, almost no one new ordered. Cutting the price about 10% ($9.90 to $8.90, later $8) did not bring new customers either. The only orders that reached many new people at once were group orders.</p>
   <div class="table-wrap">
     <table>
@@ -365,15 +407,20 @@ try {
   <h3>The plan, and what supports it</h3>
   <ol class="findings">
     <li><div><strong>Who: keep selling to students, and add Greek houses as group customers.</strong> Greencastle has few potential customers outside the university. None of the chapter houses serve meals on weekends, so members buy food with their own or the house's money. Unlike dorm students, they have no prepaid meal plan to fall back on. <span class="muted">Support: 7 of 8 pickups were already on weekends. The one DU fraternity order ($333, about 34 meals) earned more than any pickup after the third. The house paid from its budget, was referred by an existing customer, and wanted to reorder.</span></div></li>
-    <li><div><strong>How to reach new people: a lower group price in exchange for a minimum headcount and a standing monthly order.</strong> Catering becomes the main business. Individual orders are paused or kept small on catering days. <span class="muted">Support: group orders were the only channel that reached new people in bulk. The Korean Student Association brought 23 buyers and DU about 34 meals. The DU order came through an existing customer, so houses can refer each other. A standing order also makes ingredient buying predictable.</span></div></li>
+    <li><div><strong>How to reach new people: a lower group price in exchange for a minimum headcount and a standing monthly order.</strong> Catering becomes our main business, and we pause individual orders or keep them small on catering days. <span class="muted">Support: group orders were the only channel that reached new people in bulk. The Korean Student Association brought 23 buyers and DU about 34 meals. The DU order came through an existing customer, so houses can refer each other. A standing order also makes ingredient buying predictable.</span></div></li>
     <li><div><strong>What and at what price: the same Korean menu, with gross margin allowed to fall from about 50% to 40% for group pricing. Premium or jumbo items come later.</strong> <span class="muted">Support: at the first pickup's ingredient cost (about $4.95 a meal), a 40% margin means about $8.25 a meal. Where a kimchi pancake add-on was offered, average orders were $13.72–$14.00, against $10.17–$12.46 for single dishes. Customers paid more for more food.</span></div></li>
   </ol>
   <div class="two">
     <div class="stat"><div class="v">15 houses</div><div class="l">fraternities and sororities that house students in their own chapter facilities at DePauw. At an estimated 30–40 residents each, that is roughly 450–600 people.</div></div>
     <div class="stat"><div class="v">≈$5,000 / mo</div><div class="l">ceiling if all 15 houses ordered once a month at the size of the DU order. For comparison, the whole fall 2024 run brought in $2,486.</div></div>
   </div>
-  <p>The team already handled a full catering order without problems, so cooking capacity is not the constraint. The trade-off is individual sales. On the catering day (Nov 9), the team took only a few individual orders, and 5 customers came, the lowest of any pickup. That trade still paid: the $333 order was about twice the average revenue of pickups 4–8 ($167).</p>
-  <h3>Assumptions to test first</h3>
+  <p>We already handled a full catering order without problems, so cooking capacity is not the constraint. The trade-off is individual sales. On the catering day (Nov 9), we took only a few individual orders, and 5 customers came, the lowest of any pickup. That trade still paid: the $333 order was about twice the average revenue of pickups 4–8 ($167).</p>
+  <div class="photos pair">
+    <figure class="photo"><img src="images/group-order-tray.jpg" alt="A full catering tray of spicy pork" width="900" height="1200" loading="lazy"><figcaption>Korean Student Association group order · Nov 22</figcaption></figure>
+    <figure class="photo"><img src="images/group-order-plate.jpg" alt="A plate of spicy pork and rice with a bowl of kimchi stew" width="1200" height="901" loading="lazy"><figcaption>A plate from the same group order</figcaption></figure>
+  </div>
+  <details class="more">
+  <summary>Assumptions to test first</summary>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Assumption</th><th>Known so far</th><th>Measure</th></tr></thead>
@@ -385,22 +432,23 @@ try {
       </tbody>
     </table>
   </div>
-  <p class="small muted">House count from <a href="https://www.depauw.edu/studentaffairs/campusliving/clcd/greekliving/">DePauw University, Greek Living</a>. Residents per house is the team's estimate. DePauw enrolled 1,917 undergraduates in fall 2024.</p>
+  </details>
+  <p class="small muted">House count from <a href="https://www.depauw.edu/studentaffairs/campusliving/clcd/greekliving/">DePauw University, Greek Living</a>. Residents per house is our estimate. DePauw enrolled 1,917 undergraduates in fall 2024.</p>
 </section>
 
 <section>
   <div class="eyebrow">07 · Method</div>
   <h2>How the data was built</h2>
   <ul class="plain">
-    <li><strong>Source.</strong> One spreadsheet with a separate order sheet per pickup, each laid out differently. A Python script merged all eight into one table of orders and dishes, and every rebuilt pickup total matches the sheet's own total. Pickup 1 has no total cell, so it was checked against the payments actually received ($406.27).</li>
-    <li><strong>Identity.</strong> Customers were matched across pickups by name. Spelling variants of the same name were merged, and the owner confirmed the uncertain merges. Every customer is replaced by an anonymous ID, and phone numbers were dropped.</li>
-    <li><strong>Origin labels.</strong> Orders recorded names only. The owner labeled each customer's nationality from memory, working from an alphabetical name list with order history hidden to avoid bias. Uncertain cases were labeled Unknown (13 of 72), and 3 labels were marked low confidence. Nationalities were grouped into broad regions for analysis. This reflects nationality, not race or ethnicity.</li>
-    <li><strong>Limits.</strong> 72 customers is a small sample, so group comparisons are directional. Hiding order history reduces labeling bias but does not remove it. The owner likely remembered frequent customers better, so Unknown labels may cluster among one-time buyers (the Unknown group has the lowest repeat rate, 31%), which would push the known groups' repeat rates up. Ten rows at pickup 2 ($110.80) had no buyer name and are excluded from customer metrics but kept in revenue. Costs are known only for pickups 1–2 and the group order. The catering meal count was not recorded and is estimated from revenue at $9.90 a meal. The survey was anonymous and cannot be linked to buyers.</li>
+    <li><strong>Source.</strong> One spreadsheet with a separate order sheet per pickup, each laid out differently. I merged all eight into one table of orders and dishes with Python, and every rebuilt pickup total matches the sheet's own total. Pickup 1 has no total cell, so I checked it against the payments we actually received ($406.27).</li>
+    <li><strong>Identity.</strong> I matched customers across pickups by name and merged spelling variants of the same person, checking the uncertain merges with the team. Every customer is replaced by an anonymous ID, and I dropped phone numbers.</li>
+    <li><strong>Origin labels.</strong> Orders recorded names only. I labeled each customer's nationality from memory, working from an alphabetical name list with order history hidden to reduce bias. I labeled uncertain cases Unknown (13 of 72) and marked 3 labels low confidence. Nationalities were grouped into broad regions for analysis. This reflects nationality, not race or ethnicity.</li>
+    <li><strong>Limits.</strong> 72 customers is a small sample, so group comparisons are directional. Hiding order history reduces labeling bias but does not remove it. I likely remembered frequent customers better, so Unknown labels may cluster among one-time buyers (the Unknown group has the lowest repeat rate, 31%), which would push the known groups' repeat rates up. Ten rows at pickup 2 ($110.80) had no buyer name and are excluded from customer metrics but kept in revenue. Costs are known only for pickups 1–2 and the group order. The catering meal count was not recorded and is estimated from revenue at $9.90 a meal. The survey was anonymous and cannot be linked to buyers.</li>
   </ul>
 </section>
 
 <footer>
-  <span>Analysis by the DPU K-Food team · data from order sheets kept Sep–Nov 2024.</span>
+  <span>Analysis by Hyeseong Oh · data from order sheets kept Sep–Nov 2024.</span>
   <span>Individual names and contact details are not shown; all figures are aggregates.</span>
 </footer>
 
@@ -429,6 +477,7 @@ try {
     sync();
   });
   media.addEventListener("change", () => { if (!root.dataset.theme) sync(); });
+  window.addEventListener("beforeprint", () => document.querySelectorAll("details.more").forEach((d) => (d.open = true)));
   sync();
 })();
 
@@ -437,9 +486,9 @@ const EVENTS = [
   { n: 2, date: "Sep 21", day: "Sat", menu: "Kimchi fried rice, jeyuk, bibimbap (mini)", price: "$3 each, 3 for $8", customers: 32, fresh: 21, dishes: 100, revenue: 356.60, aov: 7.68, korean: 8, non: 19, unknown: 5 },
   { n: 3, date: "Sep 28", day: "Sat", menu: "Spicy pork with rice", price: "$9.90", customers: 23, fresh: 5, dishes: 35, revenue: 346.50, aov: 15.07, korean: 7, non: 14, unknown: 2 },
   { n: 4, date: "Oct 10", day: "Thu", menu: "Tteokbokki", price: "$8.90", customers: 21, fresh: 8, dishes: 24, revenue: 213.60, aov: 10.17, korean: 6, non: 12, unknown: 3 },
-  { n: 5, date: "Oct 26", day: "Sat", menu: "Gcova, soy or spicy", price: "$8.90", customers: 12, fresh: 0, dishes: 16, revenue: 142.40, aov: 11.87, korean: 2, non: 9, unknown: 1 },
-  { n: 6, date: "Nov 3", day: "Sun", menu: "Galbi + kimchi pancake add-on", price: "$8.90 + $4.90", customers: 18, fresh: 5, dishes: 35, revenue: 247.00, aov: 13.72, korean: 1, non: 13, unknown: 4 },
-  { n: 7, date: "Nov 9", day: "Sat", menu: "Galbi", price: "$8.90", customers: 5, fresh: 0, dishes: 7, revenue: 62.30, aov: 12.46, korean: 2, non: 3, unknown: 0 },
+  { n: 5, date: "Oct 26", day: "Sat", menu: "Soy or spicy chicken with rice", price: "$8.90", customers: 12, fresh: 0, dishes: 16, revenue: 142.40, aov: 11.87, korean: 2, non: 9, unknown: 1 },
+  { n: 6, date: "Nov 3", day: "Sun", menu: "Galbijjim + kimchi pancake add-on", price: "$8.90 + $4.90", customers: 18, fresh: 5, dishes: 35, revenue: 247.00, aov: 13.72, korean: 1, non: 13, unknown: 4 },
+  { n: 7, date: "Nov 9", day: "Sat", menu: "Galbijjim", price: "$8.90", customers: 5, fresh: 0, dishes: 7, revenue: 62.30, aov: 12.46, korean: 2, non: 3, unknown: 0 },
   { n: 8, date: "Nov 17", day: "Sun", menu: "Japchae + kimchi pancake add-on", price: "$8 + $4", customers: 12, fresh: 0, dishes: 33, revenue: 168.00, aov: 14.00, korean: 5, non: 7, unknown: 0 },
 ];
 const FREQ = [[1, 36], [2, 17], [3, 6], [4, 3], [5, 5], [6, 4], [7, 1]];
