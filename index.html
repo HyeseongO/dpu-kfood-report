@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>DPU K-Food Customer Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { font-size: 112.5%; }
+:root {
+  --bg: #f6f7f5;
+  --surface: #fcfcfb;
+  --ink: #15201b;
+  --ink-2: #4b5852;
+  --muted: #7a8680;
+  --rule: #dde2de;
+  --axis: #c3c8c3;
+  --accent: #1d6a4d;
+  --accent-soft: #e2eee8;
+  --s-korean: #2a78d6;
+  --s-nonkorean: #eb6834;
+  --s-unknown: #9a988f;
+  --s-returning: #4a3aa7;
+  --s-new: #1baf7a;
+  --f-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1311; --surface: #161a18; --ink: #edf2ee; --ink-2: #b7c1bb; --muted: #88928d;
+    --rule: #28302c; --axis: #3a423e; --accent: #5ec39a; --accent-soft: #1b2a23;
+    --s-korean: #3987e5; --s-nonkorean: #d95926; --s-unknown: #6f6e68;
+    --s-returning: #9085e9; --s-new: #199e70;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1311; --surface: #161a18; --ink: #edf2ee; --ink-2: #b7c1bb; --muted: #88928d;
+  --rule: #28302c; --axis: #3a423e; --accent: #5ec39a; --accent-soft: #1b2a23;
+  --s-korean: #3987e5; --s-nonkorean: #d95926; --s-unknown: #6f6e68;
+  --s-returning: #9085e9; --s-new: #199e70;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 1rem; line-height: 1.6;
+  padding-inline: 16px;
+}
+.page { max-width: 46rem; margin: 0 auto; padding-block: 3.5rem 5rem; display: grid; gap: 3.5rem; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.1rem); line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.55rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; font-weight: 500; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+}
+.muted { color: var(--muted); }
+a { color: var(--accent); text-underline-offset: 2px; }
+.small { font-size: 0.875rem; }
+section { display: grid; gap: 1.1rem; min-width: 0; }
+.stack { display: grid; gap: 0.9rem; }
+.dek { font-size: 1.15rem; color: var(--ink-2); }
+header { display: grid; gap: 1rem; }
+.meta { display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); }
+
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--rule); }
+.kpi { padding: 1rem 1rem 1.1rem; display: grid; gap: 0.2rem; align-content: start; }
+.kpi + .kpi { border-left: 1px solid var(--rule); }
+.kpi .v { font-family: var(--f-display); font-size: 2.1rem; font-weight: 700; line-height: 1.05; }
+.kpi .l { font-size: 0.85rem; color: var(--ink-2); line-height: 1.35; }
+@media (max-width: 640px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi:nth-child(3) { border-left: 0; }
+  .kpi:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+
+.findings { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: f; }
+.findings li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.5rem; padding-block: 0.9rem; border-top: 1px solid var(--rule); }
+.findings li::before { counter-increment: f; content: counter(f); font-family: var(--f-mono); font-size: 0.8rem; color: var(--accent); padding-top: 0.2rem; }
+.findings strong { font-weight: 600; }
+
+figure { margin: 0; display: grid; gap: 0.6rem; min-width: 0; }
+figcaption { display: grid; gap: 0.15rem; }
+figcaption .t { font-weight: 600; }
+figcaption .s { font-size: 0.875rem; color: var(--ink-2); }
+.chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 0.75rem 0.75rem 0.25rem; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font-family: var(--f-body); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 0.8rem; color: var(--ink-2); padding: 0 0.25rem 0.5rem; }
+.legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--ink); color: var(--bg);
+  font-size: 0.8rem; line-height: 1.4; padding: 0.45rem 0.6rem; border-radius: 4px;
+  white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); z-index: 2;
+}
+.tip b { font-weight: 600; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
+th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-mono); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+td.nw { white-space: nowrap; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .sub { display: block; color: var(--muted); font-size: 0.8rem; }
+.bar-cell { display: flex; align-items: center; gap: 0.5rem; justify-content: flex-end; }
+.bar-cell .track { width: 70px; height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; flex: none; }
+.bar-cell .fill { height: 100%; background: var(--s-korean); border-radius: 4px; }
+tr.total td { font-weight: 600; }
+
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 640px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.stat { border-top: 2px solid var(--accent); padding-top: 0.6rem; display: grid; gap: 0.2rem; }
+.stat .v { font-family: var(--f-display); font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+.stat .l { font-size: 0.875rem; color: var(--ink-2); }
+
+.note { background: var(--accent-soft); border-radius: 6px; padding: 0.9rem 1rem; font-size: 0.9rem; display: grid; gap: 0.4rem; }
+ul.plain { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.45rem; }
+ul.plain li { max-width: 65ch; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.25rem; font-size: 0.8rem; color: var(--muted); display: grid; gap: 0.3rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .chart rect.m, .chart path.m { transition: opacity 120ms ease; }
+}
+.chart .dim { opacity: 0.35; }
+
+.theme-toggle {
+  position: fixed; z-index: 10;
+  right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; padding: 0; cursor: pointer;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+}
+.theme-toggle:hover { border-color: var(--axis); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle svg { width: 20px; height: 20px; }
+.theme-toggle .sun { display: none; }
+.theme-toggle[data-mode="dark"] .sun { display: block; }
+.theme-toggle[data-mode="dark"] .moon { display: none; }
+@media print { .theme-toggle { display: none; } }
+</style>
+<script>
+try {
+  const saved = localStorage.getItem("theme");
+  if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+} catch (e) {}
+</script>
+
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="eyebrow">Case study · Fall 2024 · Greencastle, Indiana</div>
+  <h1>DPU K-Food Customer Report</h1>
+  <p class="dek">DPU K-Food was a student-run Korean food pop-up: customers pre-ordered through a form or DM, paid by Zelle, Venmo or cash, and picked up dinner from a parking lot on Bloomington St. This report analyzes all 156 recorded customer visits across its eight pickups to answer three questions: who bought, who came back, and why demand faded.</p>
+  <div class="meta"><span>8 pickups, 1 catering, 1 group order · Sep 14 – Nov 22, 2024</span><span>156 customer visits · 72 people · 348 meals served</span><span>141 pre-launch survey responses</span></div>
+</header>
+
+<div class="kpis" role="list">
+  <div class="kpi" role="listitem"><div class="v">156</div><div class="l">customer visits across 8 pickups, by 72 different people</div></div>
+  <div class="kpi" role="listitem"><div class="v">50%</div><div class="l">came back for a second pickup (36 of 72)</div></div>
+  <div class="kpi" role="listitem"><div class="v">80%</div><div class="l">of customers with a known origin were not Korean (47 of 59)</div></div>
+  <div class="kpi" role="listitem"><div class="v">$2,486</div><div class="l">total revenue across pre-orders, catering and a group order</div></div>
+</div>
+
+<section>
+  <div class="eyebrow">Outcome</div>
+  <h2>Is Korean food actually popular in the US?</h2>
+  <p>The project started with one question: would Korean food sell to people in the US who are not Korean? Within the market we tested, the answer is yes. That market was a single US campus, not the country, so the answer has limits.</p>
+  <div class="two">
+    <div class="stack">
+      <h3>What the data supports</h3>
+      <ul class="plain">
+        <li>Non-Korean customers made 103 of the 135 visits by customers with a known origin (76%). Every pickup had more non-Korean than Korean customers.</li>
+        <li>They came back. 51% of non-Korean customers ordered again, a rate not meaningfully different from Korean customers' 67%.</li>
+        <li>Americans were a real part of it: 13 people made 28 visits, and 62% of them returned.</li>
+        <li>Before launch, 82% of 141 surveyed students said they would buy at under $10.</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <h3>What it does not show</h3>
+      <ul class="plain">
+        <li>Broad US demand. Customers were students at one university, over ten weeks, at $8–$10 a meal.</li>
+        <li>Demand among American consumers specifically. Americans were 13 of 59 customers with a known origin (22%). The largest groups were international students from Southeast Asia, East Asia and elsewhere.</li>
+        <li>Growing demand. Interest held among people already reached, but new customers slowed sharply after the first two pickups (54 new, then 18 across the remaining six).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <strong>Answer</strong>
+    <p>Korean food won repeat customers from a diverse, mostly non-Korean audience on a US campus. Whether it holds with the wider American public is still untested.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Summary</div>
+  <h2>Key findings</h2>
+  <ol class="findings">
+    <li><div><strong>Korean food sold well outside the Korean community.</strong> Of the 59 customers whose origin is known, 47 were not Korean, and they placed 76% of those customers' orders. At the first pickup, 26 of 27 known customers were not Korean.</div></li>
+    <li><div><strong>Non-Korean customers came back at a similar rate.</strong> 51% of non-Korean customers ordered again, against 67% of Korean customers. With 12 Korean customers, that gap is not statistically meaningful (Fisher's exact test, p = 0.52).</div></li>
+    <li><div><strong>A small group of regulars carried the business.</strong> Half of all customers returned, and the 10 most frequent customers placed 36% of all orders.</div></li>
+    <li><div><strong>Demand fell because new customers stopped arriving.</strong> New customers per pickup went 33, 21, 5, 8, 0, 5, 0, 0. Regulars kept coming, but nothing replaced the launch wave.</div></li>
+    <li><div><strong>Southeast Asian customers were the biggest launch group but the least likely to return.</strong> They made up 10 of 33 customers at the first pickup, but only 28% of them ordered again.</div></li>
+    <li><div><strong>The pre-launch survey predicted timing and price well.</strong> The survey's most-wanted slot, weekend dinner, matched 7 of 8 pickups. All mains stayed under the $10 that 82% of respondents said they would pay. Where ingredient costs were logged, gross margin was 46–53%.</div></li>
+  </ol>
+</section>
+
+<section>
+  <div class="eyebrow">01 · Demand over time</div>
+  <h2>Eight pickups, one launch wave</h2>
+  <p>The first two pickups drew 33 and 32 customers. After that, each pickup relied mostly on people who had already ordered. Pickups 5, 7 and 8 had no first-time customers at all.</p>
+  <figure>
+    <figcaption><span class="t">Customers per pickup, new vs returning</span><span class="s">A customer is "returning" if they ordered at any earlier pickup.</span></figcaption>
+    <div class="chart" id="chart-new">
+      <div class="legend"><span><i style="background:var(--s-returning)"></i>Returning</span><span><i style="background:var(--s-new)"></i>New</span></div>
+    </div>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pickup</th><th>Menu</th><th class="n">Price</th><th class="n">Customers</th><th class="n">New</th><th class="n">Dishes</th><th class="n">Revenue</th><th class="n">Avg order</th></tr></thead>
+      <tbody id="event-rows"></tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Headcount</th><th class="n">People</th></tr></thead>
+      <tbody>
+        <tr><td>Customer visits at the 8 pickups<span class="sub">each person counted once per pickup they ordered at</span></td><td class="n">156</td></tr>
+        <tr><td>Different people behind those visits</td><td class="n">72</td></tr>
+        <tr><td>Korean Student Association group order<span class="sub">buyers on the group list</span></td><td class="n">23</td></tr>
+        <tr class="total"><td>People served through recorded orders</td><td class="n">179</td></tr>
+        <tr><td colspan="2" class="muted small">Not included: 8 item rows at pickup 2 with no buyer name (they may be extra people or extra portions), and the DU fraternity catering order, whose headcount was not recorded.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Meals served</th><th class="n">Meals</th></tr></thead>
+      <tbody>
+        <tr><td>Dishes sold at the 8 pickups<span class="sub">from the order sheets, including rows with no buyer name</span></td><td class="n">291</td></tr>
+        <tr><td>Korean Student Association group order (Nov 22)<span class="sub">one meal per buyer on the group list</span></td><td class="n">23</td></tr>
+        <tr><td>DU fraternity catering (Nov 9)<span class="sub">estimated: $333 ÷ $9.90, the price of most meals</span></td><td class="n">≈34</td></tr>
+        <tr class="total"><td>Total meals served</td><td class="n">348</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Revenue is what each pickup's order sheet recorded, and it matches the sheet's own totals. Pickup 2 includes $110.80 from rows with no buyer name. Pickup 7 fell on the same day as a $333 catering order for the DU fraternity, which is counted separately. The team took only a small number of individual orders that day to make room for the catering.</p>
+</section>
+
+<section>
+  <div class="eyebrow">02 · Retention</div>
+  <h2>Half of customers came back</h2>
+  <div class="two">
+    <div class="stat"><div class="v">36 of 72</div><div class="l">customers ordered at two or more pickups</div></div>
+    <div class="stat"><div class="v">36%</div><div class="l">of all orders came from the 10 most frequent customers</div></div>
+  </div>
+  <figure>
+    <figcaption><span class="t">Customers by number of pickups attended</span><span class="s">How many of the 8 pickups each customer ordered at. One customer ordered at 7.</span></figcaption>
+    <div class="chart" id="chart-freq"></div>
+  </figure>
+  <p>Retention was steady from pickup to pickup. On average, 42% of one pickup's customers ordered again at the very next one. The first two groups of customers held up best: 52% of the 33 launch customers and 57% of the 21 customers who joined at pickup 2 came back later.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>First pickup</th><th class="n">New customers</th><th class="n">Came back later</th><th class="n">Return rate</th></tr></thead>
+      <tbody id="cohort-rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">03 · Who bought</div>
+  <h2>Mostly non-Korean customers, from the first pickup on</h2>
+  <p>The launch reached international and American students first. Korean students joined from the second pickup. Non-Korean customers outnumbered Korean customers at every pickup.</p>
+  <figure>
+    <figcaption><span class="t">Customers per pickup by origin</span><span class="s">Origin is nationality as recalled by the owner. "Unknown" means the owner could not recall it.</span></figcaption>
+    <div class="chart" id="chart-origin">
+      <div class="legend"><span><i style="background:var(--s-korean)"></i>Korean</span><span><i style="background:var(--s-nonkorean)"></i>Non-Korean</span><span><i style="background:var(--s-unknown)"></i>Unknown</span></div>
+    </div>
+  </figure>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Origin group</th><th class="n">People</th><th class="n">Visits</th><th class="n">Share of visits</th><th class="n">Avg pickups</th><th class="n">Repeat rate</th></tr></thead>
+      <tbody id="region-rows"></tbody>
+    </table>
+  </div>
+  <div class="note">
+    <strong>How to read this table</strong>
+    <p>These groups are small, so treat them as directions to look into, not proven differences. Only the Korean vs non-Korean split is large enough to test, and it shows no significant difference in repeat rate (p = 0.52). Removing the three customers labeled with low confidence changes nothing: non-Korean share stays at 79% and their repeat rate at 50%.</p>
+  </div>
+  <p>Two patterns stand out. Japanese and Chinese customers were few (7) but the most loyal, averaging 3.4 pickups each. Vietnamese students were the largest single group (15 customers), mostly from the launch, but 72% of Southeast Asian customers never ordered again.</p>
+</section>
+
+<section>
+  <div class="eyebrow">04 · Survey vs reality</div>
+  <h2>What people said and what they bought</h2>
+  <p>Before launch, 141 students answered a short survey on what they wanted to eat, when, and whether they would pay under $10.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Survey said</th><th>What happened</th></tr></thead>
+      <tbody>
+        <tr><td>Dalkgalbi (100 votes) and K-BBQ (99) were the top picks, effectively tied</td><td>Both launched first. K-BBQ outsold Dalkgalbi 23 to 16 at the first pickup, so stated preference did not predict the actual choice.</td></tr>
+        <tr><td>Weekend dinner was the most-wanted slot (90 of 141)</td><td>7 of 8 pickups ran on a Saturday or Sunday evening. The one weekday pickup (Thursday, tteokbokki) still drew 21 customers.</td></tr>
+        <tr><td>82% would buy at under $10 (116 of 141)</td><td>Mains were priced $8.00–$9.90. The launch sold to 33 customers, about 1 for every 4 survey respondents. Survey answers were anonymous, so this is a ratio, not a measured conversion rate.</td></tr>
+        <tr><td>Tteokbokki drew 66 votes</td><td>It sold 24 portions to 21 customers when offered.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Add-ons raised order size. At the two pickups that offered a kimchi pancake on the side, the average order was $13.72 and $14.00. At single-dish pickups priced at $8.90, it was $10.17–$12.46.</p>
+</section>
+
+<section>
+  <div class="eyebrow">05 · Economics</div>
+  <h2>Roughly half of each sale was gross margin</h2>
+  <p>Ingredient and packaging costs were logged for the first two pickups and the student association order. Labor was unpaid and is not included.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Sale</th><th class="n">Revenue</th><th class="n">Ingredient cost</th><th class="n">Gross profit</th><th class="n">Margin</th></tr></thead>
+      <tbody>
+        <tr><td>Pickup 1 · Sep 14</td><td class="n">$406.27</td><td class="n">$206.74</td><td class="n">$199.53</td><td class="n">49%</td></tr>
+        <tr><td>Pickup 2 · Sep 21</td><td class="n">$362.60</td><td class="n">$197.33</td><td class="n">$165.27</td><td class="n">46%</td></tr>
+        <tr><td>Korean Student Association group order<span class="sub">Nov 22 · 23 buyers</span></td><td class="n">$200.00</td><td class="n">$94.17</td><td class="n">$105.83</td><td class="n">53%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Revenue by channel</th><th class="n">Revenue</th><th class="n">Share</th></tr></thead>
+      <tbody>
+        <tr><td>Individual pre-orders (8 pickups)</td><td class="n">$1,942.30</td><td class="n">78%</td></tr>
+        <tr><td>Catering for the DU fraternity (Nov 9)</td><td class="n">$333.00</td><td class="n">13%</td></tr>
+        <tr><td>Korean Student Association group order (Nov 22)</td><td class="n">$200.00</td><td class="n">8%</td></tr>
+        <tr><td>Tips</td><td class="n">$11.08</td><td class="n">&lt;1%</td></tr>
+        <tr class="total"><td>Total</td><td class="n">$2,486.38</td><td class="n">100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The fraternity catering order alone brought in more than any single pickup after the first three.</p>
+</section>
+
+<section>
+  <div class="eyebrow">06 · If we ran it again</div>
+  <h2>The team's plan: weekend catering for Greek houses</h2>
+  <p>The food worked for people who tried it. Reaching new people was the problem. Every pickup was announced the same way, through Instagram stories, which reach the same followers each time. After two pickups, almost no one new ordered. Cutting the price about 10% ($9.90 to $8.90, later $8) did not bring new customers either. The only orders that reached many new people at once were group orders.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>What we concluded</th><th>Evidence</th><th>Strength</th></tr></thead>
+      <tbody>
+        <tr><td>The product worked</td><td>Half of customers came back, including those who said the price was high. Average orders topped $10.</td><td class="nw">Strong</td></tr>
+        <tr><td>Getting new customers was the bottleneck</td><td>New customers per pickup: 33, 21, then 18 across the last six pickups.</td><td class="nw">Strong</td></tr>
+        <tr><td>The cause was one channel reaching the same followers</td><td>Promotion never changed. A price cut did not bring new buyers.</td><td class="nw">Moderate</td></tr>
+        <tr><td>Price mattered less for buyers than for non-buyers</td><td>Buyers who called it pricey kept ordering. Non-buyers named price, but only in informal conversations.</td><td class="nw">Weak</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>The plan, and what supports it</h3>
+  <ol class="findings">
+    <li><div><strong>Who: keep selling to students, and add Greek houses as group customers.</strong> Greencastle has few potential customers outside the university. None of the chapter houses serve meals on weekends, so members buy food with their own or the house's money. Unlike dorm students, they have no prepaid meal plan to fall back on. <span class="muted">Support: 7 of 8 pickups were already on weekends. The one DU fraternity order ($333, about 34 meals) earned more than any pickup after the third. The house paid from its budget, was referred by an existing customer, and wanted to reorder.</span></div></li>
+    <li><div><strong>How to reach new people: a lower group price in exchange for a minimum headcount and a standing monthly order.</strong> Catering becomes the main business. Individual orders are paused or kept small on catering days. <span class="muted">Support: group orders were the only channel that reached new people in bulk. The Korean Student Association brought 23 buyers and DU about 34 meals. The DU order came through an existing customer, so houses can refer each other. A standing order also makes ingredient buying predictable.</span></div></li>
+    <li><div><strong>What and at what price: the same Korean menu, with gross margin allowed to fall from about 50% to 40% for group pricing. Premium or jumbo items come later.</strong> <span class="muted">Support: at the first pickup's ingredient cost (about $4.95 a meal), a 40% margin means about $8.25 a meal. Where a kimchi pancake add-on was offered, average orders were $13.72–$14.00, against $10.17–$12.46 for single dishes. Customers paid more for more food.</span></div></li>
+  </ol>
+  <div class="two">
+    <div class="stat"><div class="v">15 houses</div><div class="l">fraternities and sororities that house students in their own chapter facilities at DePauw. At an estimated 30–40 residents each, that is roughly 450–600 people.</div></div>
+    <div class="stat"><div class="v">≈$5,000 / mo</div><div class="l">ceiling if all 15 houses ordered once a month at the size of the DU order. For comparison, the whole fall 2024 run brought in $2,486.</div></div>
+  </div>
+  <p>The team already handled a full catering order without problems, so cooking capacity is not the constraint. The trade-off is individual sales. On the catering day (Nov 9), the team took only a few individual orders, and 5 customers came, the lowest of any pickup. That trade still paid: the $333 order was about twice the average revenue of pickups 4–8 ($167).</p>
+  <h3>Assumptions to test first</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Assumption</th><th>Known so far</th><th>Measure</th></tr></thead>
+      <tbody>
+        <tr><td>Houses reorder every month</td><td>1 house said it would</td><td>Houses on a standing order, and how many reorder</td></tr>
+        <tr><td>Houses refer other houses</td><td>DU came through an existing customer</td><td>New houses reached by referral</td></tr>
+        <tr><td>The full cost of a group meal leaves a 40% margin</td><td>Catering costs were not recorded</td><td>Ingredients, packaging and transport per meal</td></tr>
+        <tr><td>Catering earns more than the individual sales it replaces</td><td>1 catering day: $333 vs $167 average pickup (4–8)</td><td>Profit per team-day, catering vs pickup</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">House count from <a href="https://www.depauw.edu/studentaffairs/campusliving/clcd/greekliving/">DePauw University, Greek Living</a>. Residents per house is the team's estimate. DePauw enrolled 1,917 undergraduates in fall 2024.</p>
+</section>
+
+<section>
+  <div class="eyebrow">07 · Method</div>
+  <h2>How the data was built</h2>
+  <ul class="plain">
+    <li><strong>Source.</strong> One spreadsheet with a separate order sheet per pickup, each laid out differently. A Python script merged all eight into one table of orders and dishes, and every rebuilt pickup total matches the sheet's own total. Pickup 1 has no total cell, so it was checked against the payments actually received ($406.27).</li>
+    <li><strong>Identity.</strong> Customers were matched across pickups by name. Spelling variants of the same name were merged, and the owner confirmed the uncertain merges. Every customer is replaced by an anonymous ID, and phone numbers were dropped.</li>
+    <li><strong>Origin labels.</strong> Orders recorded names only. The owner labeled each customer's nationality from memory, working from an alphabetical name list with order history hidden to avoid bias. Uncertain cases were labeled Unknown (13 of 72), and 3 labels were marked low confidence. Nationalities were grouped into broad regions for analysis. This reflects nationality, not race or ethnicity.</li>
+    <li><strong>Limits.</strong> 72 customers is a small sample, so group comparisons are directional. Ten rows at pickup 2 ($110.80) had no buyer name and are excluded from customer metrics but kept in revenue. Costs are known only for pickups 1–2 and the group order. The catering meal count was not recorded and is estimated from revenue at $9.90 a meal. The survey was anonymous and cannot be linked to buyers.</li>
+  </ul>
+</section>
+
+<footer>
+  <span>Analysis by the DPU K-Food team · data from order sheets kept Sep–Nov 2024.</span>
+  <span>Individual names and contact details are not shown; all figures are aggregates.</span>
+</footer>
+
+</div>
+
+<button class="theme-toggle" type="button" aria-label="Switch to dark mode">
+  <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+</button>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const btn = document.querySelector(".theme-toggle");
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const current = () => root.dataset.theme || (media.matches ? "dark" : "light");
+  const sync = () => {
+    const mode = current();
+    btn.dataset.mode = mode;
+    btn.setAttribute("aria-label", mode === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  };
+  btn.addEventListener("click", () => {
+    const next = current() === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    sync();
+  });
+  media.addEventListener("change", () => { if (!root.dataset.theme) sync(); });
+  sync();
+})();
+
+const EVENTS = [
+  { n: 1, date: "Sep 14", day: "Sat", menu: "Dalkgalbi / K-BBQ lunch set", price: "$9.90", customers: 33, fresh: 33, dishes: 41, revenue: 405.90, aov: 12.30, korean: 1, non: 26, unknown: 6 },
+  { n: 2, date: "Sep 21", day: "Sat", menu: "Kimchi fried rice, jeyuk, bibimbap (mini)", price: "$3 each, 3 for $8", customers: 32, fresh: 21, dishes: 100, revenue: 356.60, aov: 7.68, korean: 8, non: 19, unknown: 5 },
+  { n: 3, date: "Sep 28", day: "Sat", menu: "Spicy pork with rice", price: "$9.90", customers: 23, fresh: 5, dishes: 35, revenue: 346.50, aov: 15.07, korean: 7, non: 14, unknown: 2 },
+  { n: 4, date: "Oct 10", day: "Thu", menu: "Tteokbokki", price: "$8.90", customers: 21, fresh: 8, dishes: 24, revenue: 213.60, aov: 10.17, korean: 6, non: 12, unknown: 3 },
+  { n: 5, date: "Oct 26", day: "Sat", menu: "Gcova, soy or spicy", price: "$8.90", customers: 12, fresh: 0, dishes: 16, revenue: 142.40, aov: 11.87, korean: 2, non: 9, unknown: 1 },
+  { n: 6, date: "Nov 3", day: "Sun", menu: "Galbi + kimchi pancake add-on", price: "$8.90 + $4.90", customers: 18, fresh: 5, dishes: 35, revenue: 247.00, aov: 13.72, korean: 1, non: 13, unknown: 4 },
+  { n: 7, date: "Nov 9", day: "Sat", menu: "Galbi", price: "$8.90", customers: 5, fresh: 0, dishes: 7, revenue: 62.30, aov: 12.46, korean: 2, non: 3, unknown: 0 },
+  { n: 8, date: "Nov 17", day: "Sun", menu: "Japchae + kimchi pancake add-on", price: "$8 + $4", customers: 12, fresh: 0, dishes: 33, revenue: 168.00, aov: 14.00, korean: 5, non: 7, unknown: 0 },
+];
+const FREQ = [[1, 36], [2, 17], [3, 6], [4, 3], [5, 5], [6, 4], [7, 1]];
+const COHORTS = [[1, 33, 17], [2, 21, 12], [3, 5, 4], [4, 8, 3], [6, 5, 0]];
+const REGIONS = [
+  { r: "Korean", c: 12, v: 32, os: 20.5, avg: 2.67, rep: 66.7, note: "Korea" },
+  { r: "Southeast Asian", c: 18, v: 26, os: 16.7, avg: 1.44, rep: 27.8, note: "Vietnam 15, Philippines 2, Thailand 1" },
+  { r: "United States", c: 13, v: 28, os: 17.9, avg: 2.15, rep: 61.5, note: "USA" },
+  { r: "Other East Asian", c: 7, v: 24, os: 15.4, avg: 3.43, rep: 57.1, note: "Japan 4, China 3" },
+  { r: "Other international", c: 9, v: 25, os: 16.0, avg: 2.78, rep: 77.8, note: "Africa 3, Central Asia 2, Europe 2, India 1, Qatar 1" },
+  { r: "Unknown", c: 13, v: 21, os: 13.5, avg: 1.62, rep: 30.8, note: "origin not recalled" },
+];
+
+const $ = (s) => document.querySelector(s);
+const money = (v) => "$" + v.toFixed(2);
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function colPath(x, y, w, h, round) {
+  if (!round || h < 5) return `M${x},${y + h}V${y}H${x + w}V${y + h}Z`;
+  const r = 4;
+  return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+}
+
+function tooltip(container) {
+  const t = document.createElement("div");
+  t.className = "tip"; t.hidden = true; container.appendChild(t);
+  return {
+    show(html, evt) {
+      t.innerHTML = html; t.hidden = false;
+      const b = container.getBoundingClientRect();
+      let x = evt.clientX - b.left;
+      x = Math.max(80, Math.min(b.width - 80, x));
+      t.style.left = x + "px"; t.style.top = (evt.clientY - b.top) + "px";
+    },
+    hide() { t.hidden = true; },
+  };
+}
+
+function stacked({ mount, rows, series, label, sub, max, ticks, tipFor }) {
+  const pad = parseFloat(getComputedStyle(mount).paddingLeft) || 0;
+  const W = Math.round(Math.min(640, Math.max(300, mount.clientWidth - 2 * pad)));
+  const compact = W < 480;
+  const H = 260, m = { t: 22, r: 8, b: 44, l: 34 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": mount.dataset.label || "" });
+  mount.appendChild(svg);
+  const y = (v) => m.t + ih - (v / max) * ih;
+  ticks.forEach((tv) => {
+    el("line", { x1: m.l, x2: W - m.r, y1: y(tv), y2: y(tv), stroke: tv === 0 ? "var(--axis)" : "var(--rule)", "stroke-width": 1 }, svg);
+    const tx = el("text", { x: m.l - 8, y: y(tv) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" }, svg);
+    tx.textContent = tv;
+  });
+  const band = iw / rows.length, bw = Math.min(24, band * 0.5);
+  const tip = tooltip(mount);
+  const groups = [];
+  rows.forEach((row, i) => {
+    const cx = m.l + band * i + band / 2, x = cx - bw / 2;
+    const g = el("g", {}, svg);
+    groups.push(g);
+    let acc = 0;
+    const visible = series.filter((s) => row[s.key] > 0);
+    series.forEach((s) => {
+      const v = row[s.key];
+      if (!v) return;
+      const top = y(acc + v), bottom = y(acc);
+      const isTop = s === visible[visible.length - 1];
+      const gap = acc > 0 ? 2 : 0;
+      el("path", { class: "m", d: colPath(x, top, bw, Math.max(0, bottom - top - gap), isTop), fill: `var(${s.color})` }, g);
+      acc += v;
+    });
+    const total = el("text", { x: cx, y: y(acc) - 6, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: "var(--ink)" }, svg);
+    total.textContent = acc;
+    const l1 = el("text", { x: cx, y: H - m.b + 18, "text-anchor": "middle", "font-size": compact ? 10 : 11.5, fill: "var(--ink-2)" }, svg);
+    l1.textContent = label(row, compact);
+    const l2 = el("text", { x: cx, y: H - m.b + 33, "text-anchor": "middle", "font-size": 10.5, fill: "var(--muted)" }, svg);
+    l2.textContent = sub(row);
+    const hit = el("rect", { x: m.l + band * i, y: m.t, width: band, height: ih + 36, fill: "transparent" }, svg);
+    hit.addEventListener("pointermove", (e) => {
+      groups.forEach((gg, j) => gg.classList.toggle("dim", j !== i));
+      tip.show(tipFor(row), e);
+    });
+    hit.addEventListener("pointerleave", () => { groups.forEach((gg) => gg.classList.remove("dim")); tip.hide(); });
+  });
+}
+
+EVENTS.forEach((e) => (e.ret = e.customers - e.fresh));
+const MONTH = { Sep: 9, Oct: 10, Nov: 11 };
+const shortDate = (r, compact) => {
+  if (!compact) return r.date;
+  const [mon, day] = r.date.split(" ");
+  return `${MONTH[mon]}/${day}`;
+};
+stacked({
+  mount: $("#chart-new"), rows: EVENTS, max: 35, ticks: [0, 10, 20, 30],
+  series: [{ key: "ret", color: "--s-returning" }, { key: "fresh", color: "--s-new" }],
+  label: shortDate, sub: (r) => "#" + r.n,
+  tipFor: (r) => `<b>Pickup ${r.n} · ${r.date}</b><br>${r.ret} returning · ${r.fresh} new`,
+});
+stacked({
+  mount: $("#chart-origin"), rows: EVENTS, max: 35, ticks: [0, 10, 20, 30],
+  series: [{ key: "korean", color: "--s-korean" }, { key: "non", color: "--s-nonkorean" }, { key: "unknown", color: "--s-unknown" }],
+  label: shortDate, sub: (r) => "#" + r.n,
+  tipFor: (r) => `<b>Pickup ${r.n} · ${r.date}</b><br>${r.korean} Korean · ${r.non} non-Korean · ${r.unknown} unknown`,
+});
+stacked({
+  mount: $("#chart-freq"), rows: FREQ.map(([k, v]) => ({ k, v })), max: 40, ticks: [0, 10, 20, 30, 40],
+  series: [{ key: "v", color: "--s-korean" }],
+  label: (r, compact) => r.k + (r.k === 1 && !compact ? " pickup" : ""), sub: () => "",
+  tipFor: (r) => `<b>${r.v} customers</b><br>ordered at ${r.k} pickup${r.k > 1 ? "s" : ""}`,
+});
+
+$("#event-rows").innerHTML = EVENTS.map((e) => `
+  <tr><td class="nw">${e.n} · ${e.date}<span class="sub">${e.day}</span></td><td>${e.menu}</td><td class="n">${e.price}</td>
+  <td class="n">${e.customers}</td><td class="n">${e.fresh}</td><td class="n">${e.dishes}</td>
+  <td class="n">${money(e.revenue)}</td><td class="n">${money(e.aov)}</td></tr>`).join("") +
+  `<tr class="total"><td>Total</td><td></td><td></td><td class="n">156<span class="sub">72 people</span></td><td class="n">72</td><td class="n">291</td><td class="n">$1,942.30</td><td></td></tr>`;
+
+$("#cohort-rows").innerHTML = COHORTS.map(([f, n, r]) =>
+  `<tr><td>Pickup ${f}</td><td class="n">${n}</td><td class="n">${r}</td><td class="n">${Math.round((r / n) * 100)}%</td></tr>`).join("") +
+  `<tr><td colspan="4" class="muted small">Pickups 5, 7 and 8 brought in no new customers. Pickup 6's five newcomers had only two later pickups to return to.</td></tr>`;
+
+$("#region-rows").innerHTML = REGIONS.map((g) => `
+  <tr><td>${g.r}<span class="sub">${g.note}</span></td><td class="n">${g.c}</td><td class="n">${g.v}</td><td class="n">${g.os.toFixed(0)}%</td>
+  <td class="n">${g.avg.toFixed(1)}</td>
+  <td class="n"><div class="bar-cell"><span>${g.rep.toFixed(0)}%</span><span class="track"><span class="fill" style="width:${g.rep}%;display:block"></span></span></div></td></tr>`).join("");
+</script>
+
+</body>
+</html>
