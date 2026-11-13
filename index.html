@@ -187,7 +187,7 @@ try {
     </div>
   </div>
   <p class="dek">I started DPU K-Food with three friends in fall 2024 to find out whether Korean food would sell to students who are not Korean. We took pre-orders through a form or Instagram DM, collected payment by Zelle, Venmo or cash, and handed out dinner from a parking lot on Bloomington St. In this report I analyze all 156 recorded customer visits across our eight pickups to answer three questions: who bought, who came back, and why demand faded.</p>
-  <div class="meta"><span>8 pickups, 1 catering, 1 group order · Sep 14 – Nov 22, 2024</span><span>156 customer visits · 72 people · 348 meals served</span><span>141 pre-launch survey responses</span></div>
+  <div class="meta"><span>8 pickups, 1 catering, 1 group order · Sep 14 – Nov 22, 2024</span><span>156 customer visits · 72 people · about 348 meals served</span><span>141 pre-launch survey responses</span></div>
 </header>
 
 <div class="kpis" role="list">
@@ -284,7 +284,7 @@ try {
         <tr><td>Dishes sold at the 8 pickups<span class="sub">from the order sheets, including rows with no buyer name</span></td><td class="n">291</td></tr>
         <tr><td>Korean Student Association group order (Nov 22)<span class="sub">one meal per buyer on the group list</span></td><td class="n">23</td></tr>
         <tr><td>DU fraternity catering (Nov 9)<span class="sub">estimated: $333 ÷ $9.90, the price of most meals</span></td><td class="n">≈34</td></tr>
-        <tr class="total"><td>Total meals served</td><td class="n">348</td></tr>
+        <tr class="total"><td>Total meals served<span class="sub">catering estimated</span></td><td class="n">≈348</td></tr>
       </tbody>
     </table>
   </div>
@@ -443,7 +443,7 @@ try {
     <li><strong>Source.</strong> One spreadsheet with a separate order sheet per pickup, each laid out differently. I merged all eight into one table of orders and dishes with Python, and every rebuilt pickup total matches the sheet's own total. Pickup 1 has no total cell, so I checked it against the payments we actually received ($406.27).</li>
     <li><strong>Identity.</strong> I matched customers across pickups by name and merged spelling variants of the same person, checking the uncertain merges with the team. Every customer is replaced by an anonymous ID, and I dropped phone numbers.</li>
     <li><strong>Origin labels.</strong> Orders recorded names only. I labeled each customer's nationality from memory, working from an alphabetical name list with order history hidden to reduce bias. I labeled uncertain cases Unknown (13 of 72) and marked 3 labels low confidence. Nationalities were grouped into broad regions for analysis. This reflects nationality, not race or ethnicity.</li>
-    <li><strong>Limits.</strong> 72 customers is a small sample, so group comparisons are directional. Hiding order history reduces labeling bias but does not remove it. I likely remembered frequent customers better, so Unknown labels may cluster among one-time buyers (the Unknown group has the lowest repeat rate, 31%), which would push the known groups' repeat rates up. Ten rows at pickup 2 ($110.80) had no buyer name and are excluded from customer metrics but kept in revenue. Costs are known only for pickups 1–2 and the group order. The catering meal count was not recorded and is estimated from revenue at $9.90 a meal. The survey was anonymous and cannot be linked to buyers.</li>
+    <li><strong>Limits.</strong> 72 customers is a small sample, so group comparisons are directional. Hiding order history reduces labeling bias but does not remove it. I likely remembered frequent customers better, so Unknown labels may cluster among one-time buyers (the Unknown group has the lowest repeat rate, 31%), which would push the known groups' repeat rates up. Ten rows at pickup 2 ($110.80) had no buyer name (8 rows listing items and 2 lump payments with no items) and are excluded from customer metrics but kept in revenue. Costs are known only for pickups 1–2 and the group order. The catering meal count was not recorded and is estimated from revenue at $9.90 a meal. The survey was anonymous and cannot be linked to buyers.</li>
   </ul>
 </section>
 

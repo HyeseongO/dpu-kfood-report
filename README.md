@@ -10,7 +10,7 @@ I kept hearing that Korean food was catching on in the US and wanted to see whet
 
 ## Key findings
 
-- Over 10 weeks and 8 pickups, 72 people placed 156 orders. Counting one catering order and one group order, the business served 348 meals and took in about $2.5K.
+- Over 10 weeks and 8 pickups, 72 people placed 156 orders. Counting one catering order and one group order, the business served about 348 meals (the catering count is an estimate) and took in about $2.5K.
 - Of the 59 customers whose origin is known, 47 (80%) were not Korean. Half of all customers (36 of 72) ordered again. Non-Korean customers reordered at 51% and Korean customers at 67%, a gap that is not statistically meaningful (Fisher's exact test, p = 0.52).
 - Growth stalled when new customers stopped arriving, while regulars kept ordering. The first two pickups brought 33 and 21 new customers. The remaining six brought 18 combined.
 - One fraternity catering order ($333) earned about twice the average late-season pickup ($167 across pickups 4–8).
